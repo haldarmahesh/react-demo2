@@ -12,3 +12,10 @@ export async function convertCurrency({ from, to, amount }) {
 
   return result;
 }
+
+export async function getTimeSeries({ from, to, startDate, endDate }) {
+  const result = await fetch(
+    `https://api.exchangerate.host/timeseries?start_date=${startDate}&end_date=${endDate}&base=${from}&symbols=${to}`
+  ).then((res) => res.json());
+  return result;
+}

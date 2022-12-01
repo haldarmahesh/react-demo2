@@ -3,6 +3,7 @@ import { Container } from "@material-ui/core";
 import ConversionForm from "./conversion-form";
 import ConversionResult from "./conversion-result";
 import { getSymbols } from "../../services/exchange.service";
+import ExchangeHistory from "./exchange-history";
 const ConverterTabComponent = ({}) => {
   const [symbols, setSymbols] = useState(null);
   useEffect(() => {
@@ -15,7 +16,7 @@ const ConverterTabComponent = ({}) => {
   const [fromCurrencyCode, setFromCurrencyCode] = useState(null);
   const [toCurrencyCode, setToCurrencyCode] = useState(null);
   const [conversionResult, setConversionResult] = useState(null);
-  console.log("PARE", fromCurrencyCode, toCurrencyCode);
+  const [duration, setDuration] = useState(7);
   return (
     <Container>
       <ConversionForm
@@ -29,6 +30,14 @@ const ConverterTabComponent = ({}) => {
         setConversionResult={setConversionResult}
       />
       <ConversionResult result={conversionResult} />
+      <ExchangeHistory
+        result={conversionResult}
+        duration={duration}
+        setDuration={setDuration}
+        historyKey={`${conversionResult && conversionResult.amount}_${
+          conversionResult && conversionResult.from
+        }_${conversionResult && conversionResult.to}`}
+      />
     </Container>
   );
 };

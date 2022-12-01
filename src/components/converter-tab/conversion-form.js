@@ -5,6 +5,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 
 import Header from "./header";
 import { convertCurrency } from "../../services/exchange.service";
+import { storageService } from "../../services/storage.service";
 const ConversionForm = ({
   symbolList,
   setAmount,
@@ -78,17 +79,26 @@ const ConversionForm = ({
           color="primary"
           fullWidth={true}
           onClick={async () => {
-            setConversionResult({ state: "loading" });
+            setConversionResult((res) => ({ ...res, state: "loading" }));
             const res = await convertCurrency({
               from: fromCurrencyCode,
               to: toCurrencyCode,
               amount: amount,
             });
-            setConversionResult({
+            const conversionResult = {
               result: res.result,
               rate: res.info.rate,
               ...res.query,
-            });
+              createdAt: new Date().toLocaleString(),
+            };
+            storageService.setItem(
+              conversionResult.createdAt,
+              JSON.stringify(conversionResult)
+            );
+            setConversionResult((res) => ({
+              ...conversionResult,
+              state: null,
+            }));
           }}
         >
           Convert
