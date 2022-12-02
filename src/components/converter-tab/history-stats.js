@@ -13,7 +13,6 @@ function getStats(history, to) {
   history &&
     Object.keys(history).forEach((date, index) => {
       if (history[date][to] > highest) {
-        console.log("R", history[date][to], highest);
         highest = history[date][to];
       }
       if (history[date][to] < lowest) {

@@ -5,6 +5,9 @@ function getItem(key) {
 function setItem(key, value) {
   return localStorage.setItem(key, value);
 }
+function removeItem(key) {
+  return localStorage.removeItem(key);
+}
 function getAll() {
   const res = [];
   for (const [key, value] of Object.entries(localStorage)) {
@@ -18,4 +21,5 @@ export const storageService = {
   getItem,
   setItem,
   getAll,
+  removeItem,
 };

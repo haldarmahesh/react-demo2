@@ -51,7 +51,6 @@ const ConversionForm = ({
           >
             <CompareArrowsIcon
               onClick={() => {
-                console.log("BBB", fromCurrencyCode, toCurrencyCode);
                 setToCurrencyCode(fromCurrencyCode);
                 setFromCurrencyCode(toCurrencyCode);
               }}

@@ -9,12 +9,10 @@ function getFormattedDate(date) {
 }
 function ExchangeHistory({ result, historyKey, duration, setDuration }) {
   const [history, setHistory] = useState(null);
-  console.log("DUR", duration);
   useEffect(() => {
     if (!result) {
       return;
     }
-    console.log("DUR EDD", duration);
     if (result.amount && result.to && result.from) {
       (async () => {
         const currentDate = new Date();
@@ -22,14 +20,12 @@ function ExchangeHistory({ result, historyKey, duration, setDuration }) {
           new Date(currentDate.getFullYear(), currentDate.getMonth(), -duration)
         );
         const endDate = getFormattedDate(currentDate);
-        console.log("CAA", startDate, endDate);
         const series = await getTimeSeries({
           from: result.from,
           to: result.to,
           endDate,
           startDate,
         });
-        console.log("RES", series);
         setHistory(series.rates);
       })();
     }

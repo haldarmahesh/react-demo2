@@ -3,7 +3,6 @@ import {
   Button,
   Container,
   Grid,
-  makeStyles,
   Paper,
   Table,
   TableBody,
@@ -26,7 +25,12 @@ const HistoryTabComponent = () => {
   useEffect(() => {
     setAllHistory(storageService.getAll());
   }, []);
-  console.log(hoveringOver);
+  function deleteHandler(rowId) {
+    storageService.removeItem(rowId);
+    setAllHistory((currentList) =>
+      currentList.filter(([key]) => key !== rowId)
+    );
+  }
   return (
     <Container>
       <Grid container spacing={3}>
@@ -44,12 +48,6 @@ const HistoryTabComponent = () => {
                 {allHistory &&
                   allHistory.map(([dateTime, resString]) => {
                     const result = JSON.parse(resString);
-                    console.log(
-                      "MAP",
-                      hoveringOver,
-                      dateTime,
-                      hoveringOver === dateTime
-                    );
                     return (
                       <TableRow
                         onMouseEnter={(event) =>
@@ -87,6 +85,7 @@ const HistoryTabComponent = () => {
                               <Grid item xs>
                                 <Button
                                   variant="contained"
+                                  onClick={() => deleteHandler(dateTime)}
                                   color="secondary"
                                   startIcon={<DeleteIcon />}
                                 >
