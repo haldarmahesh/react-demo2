@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Grid, IconButton, TextField } from "@material-ui/core";
 import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -15,7 +15,55 @@ const ConversionForm = ({
   fromCurrencyCode,
   toCurrencyCode,
   setConversionResult,
+  initResult,
+  setInitResult,
 }) => {
+  async function convertHandler(initResult) {
+    setConversionResult((res) => ({ ...res, state: "loading" }));
+
+    const res = await convertCurrency({
+      from: fromCurrencyCode || (initResult && initResult.from),
+      to: toCurrencyCode || (initResult && initResult.to),
+      amount: amount || (initResult && initResult.amount),
+    });
+    const conversionResult = {
+      result: res.result,
+      rate: res.info.rate,
+      ...res.query,
+      createdAt: new Date().toLocaleString(),
+    };
+    storageService.setItem(
+      conversionResult.createdAt,
+      JSON.stringify(conversionResult)
+    );
+
+    setConversionResult((res) => ({
+      ...conversionResult,
+      state: null,
+    }));
+  }
+  useEffect(() => {
+    (async () => {
+      if (initResult.amount && initResult.from && initResult.to) {
+        setConversionResult((res) => ({ ...res, state: "loading" }));
+        const res = await convertCurrency({
+          from: fromCurrencyCode || (initResult && initResult.from),
+          to: toCurrencyCode || (initResult && initResult.to),
+          amount: amount || (initResult && initResult.amount),
+        });
+        const conversionResult = {
+          result: res.result,
+          rate: res.info.rate,
+          ...res.query,
+          createdAt: new Date().toLocaleString(),
+        };
+        setConversionResult((res) => ({
+          ...conversionResult,
+          state: null,
+        }));
+      }
+    })();
+  }, [initResult]);
   return (
     <Grid container spacing={3}>
       <Header />
@@ -77,28 +125,7 @@ const ConversionForm = ({
           variant="contained"
           color="primary"
           fullWidth={true}
-          onClick={async () => {
-            setConversionResult((res) => ({ ...res, state: "loading" }));
-            const res = await convertCurrency({
-              from: fromCurrencyCode,
-              to: toCurrencyCode,
-              amount: amount,
-            });
-            const conversionResult = {
-              result: res.result,
-              rate: res.info.rate,
-              ...res.query,
-              createdAt: new Date().toLocaleString(),
-            };
-            storageService.setItem(
-              conversionResult.createdAt,
-              JSON.stringify(conversionResult)
-            );
-            setConversionResult((res) => ({
-              ...conversionResult,
-              state: null,
-            }));
-          }}
+          onClick={() => convertHandler()}
         >
           Convert
         </Button>

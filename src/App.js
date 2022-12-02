@@ -1,8 +1,8 @@
 import "./App.css";
-import HeaderComponent from "./components/header";
+import DashboardPage from "./pages/dashboard";
 
 function App() {
-  return <HeaderComponent />;
+  return <DashboardPage />;
 }
 
 export default App;

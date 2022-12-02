@@ -16,7 +16,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 
 import { storageService } from "../../services/storage.service";
 
-const HistoryTabComponent = () => {
+const HistoryTabComponent = ({ setInitResult, setTabIndex }) => {
   const [allHistory, setAllHistory] = useState([]);
   const [hoveringOver, setHoveringOver] = useState("");
   const handleRowHover = (event, propsData) =>
@@ -30,6 +30,12 @@ const HistoryTabComponent = () => {
     setAllHistory((currentList) =>
       currentList.filter(([key]) => key !== rowId)
     );
+  }
+
+  function viewHandler(rowId) {
+    const result = storageService.getItem(rowId);
+    setInitResult(JSON.parse(result));
+    setTabIndex(1);
   }
   return (
     <Container>
@@ -75,6 +81,7 @@ const HistoryTabComponent = () => {
                             <Grid container direction="row">
                               <Grid item xs>
                                 <Button
+                                  onClick={() => viewHandler(dateTime)}
                                   variant="contained"
                                   color="primary"
                                   startIcon={<VisibilityIcon />}
@@ -89,7 +96,7 @@ const HistoryTabComponent = () => {
                                   color="secondary"
                                   startIcon={<DeleteIcon />}
                                 >
-                                  Delete from history
+                                  Delete
                                 </Button>
                               </Grid>
                             </Grid>
