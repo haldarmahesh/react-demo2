@@ -1,5 +1,6 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
+import LoaderComponent from "../loader";
 
 const ConversionResult = ({ result }) => {
   if (result === null) {
@@ -10,7 +11,7 @@ const ConversionResult = ({ result }) => {
   if (result && result.state === "loading") {
     component = (
       <Grid key="loader" item>
-        <h1>Loading..</h1>
+        <LoaderComponent />
       </Grid>
     );
   } else {
@@ -36,6 +37,7 @@ const ConversionResult = ({ result }) => {
       direction="column"
       justifyContent="center"
       alignItems="center"
+      spacing={2}
     >
       {component}
     </Grid>
