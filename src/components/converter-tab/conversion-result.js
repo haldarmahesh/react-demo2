@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Divider, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import LoaderComponent from "../loader";
 
@@ -18,9 +18,12 @@ const ConversionResult = ({ result }) => {
     component = (
       <>
         <Grid key="amount" item>
-          <h1>
-            {result.amount} {result.from} = {result.result} {result.to}
-          </h1>
+          <Typography display="inline" variant="h2">
+            {result.amount} {result.from} ={" "}
+          </Typography>
+          <Typography color="secondary" display="inline" variant="h2">
+            {result.result} {result.to}
+          </Typography>
         </Grid>
         <Grid key="from" item>
           1 {result.from} = {result.rate} {result.to}
@@ -32,15 +35,19 @@ const ConversionResult = ({ result }) => {
     );
   }
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      spacing={2}
-    >
-      {component}
-    </Grid>
+    <>
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        spacing={2}
+      >
+        {component}
+      </Grid>
+      <br />
+      <Divider />
+    </>
   );
 };
 

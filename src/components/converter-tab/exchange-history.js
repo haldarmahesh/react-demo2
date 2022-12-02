@@ -1,8 +1,10 @@
-import { Grid } from "@material-ui/core";
+import { FormControlLabel, Grid, Radio, RadioGroup } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { getTimeSeries } from "../../services/exchange.service";
 import LoaderComponent from "../loader";
 import DaysDropDown from "./days-dropdown";
+import ExchangeHistoryChart from "./exchange-history-chart";
+import ExchangeHistoryTable from "./exhange-history-table";
 import HistoricalTable from "./historical-table";
 import HistoryStats from "./history-stats";
 function getFormattedDate(date) {
@@ -11,6 +13,7 @@ function getFormattedDate(date) {
 function ExchangeHistory({ result, historyKey, duration, setDuration }) {
   const [history, setHistory] = useState(null);
   const [loader, setLoader] = useState(false);
+  const [displayType, setDisplayType] = useState("table");
   useEffect(() => {
     if (!result) {
       return;
@@ -39,24 +42,46 @@ function ExchangeHistory({ result, historyKey, duration, setDuration }) {
   }
 
   return (
-    <Grid container spacing={3} direction="column">
-      <Grid item>
+    <Grid container spacing={3} direction="rows">
+      <Grid item xs={12}>
         <h2>Exchange History</h2>
       </Grid>
-      <Grid item>
+      <Grid item xs={5}>
         <DaysDropDown duration={duration} setDuration={setDuration} />
+      </Grid>
+      <Grid item>
+        <RadioGroup
+          row
+          aria-label="position"
+          name="position"
+          defaultValue="top"
+          onChange={(event) => {
+            console.log("RADIO", event.target.value);
+            setDisplayType(event.target.value);
+          }}
+        >
+          <FormControlLabel
+            control={<Radio color="primary" value={"table"} />}
+            label="Table"
+            checked={displayType === "table"}
+          />
+          <FormControlLabel
+            checked={displayType === "chart"}
+            control={<Radio value="chart" color="primary" />}
+            label="Chart"
+          />
+        </RadioGroup>
       </Grid>
       <Grid item container spacing={6}>
         {loader ? (
           <LoaderComponent />
         ) : (
           <>
-            <Grid item xs={6}>
-              <HistoricalTable data={history} to={result.to} />
-            </Grid>
-            <Grid item xs={6}>
-              <HistoryStats history={history} to={result.to} />
-            </Grid>
+            {displayType === "table" ? (
+              <ExchangeHistoryTable history={history} to={result.to} />
+            ) : (
+              <ExchangeHistoryChart to={result.to} history={history} />
+            )}
           </>
         )}
       </Grid>
