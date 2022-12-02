@@ -10,7 +10,6 @@ import {
 } from "@material-ui/core";
 function getStats(history, to) {
   let [lowest, highest, average] = [Math.min(), Math.max(), 0];
-  // for (const rate of history) {
   history &&
     Object.keys(history).forEach((date, index) => {
       if (history[date][to] > highest) {
@@ -23,7 +22,6 @@ function getStats(history, to) {
       average = average + history[date][to];
     });
   average = average / Object.keys(history).length;
-  // }
   return [lowest, highest, average];
 }
 const HistoryStats = ({ history, to }) => {
