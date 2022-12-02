@@ -5,8 +5,6 @@ import LoaderComponent from "../loader";
 import DaysDropDown from "./days-dropdown";
 import ExchangeHistoryChart from "./exchange-history-chart";
 import ExchangeHistoryTable from "./exhange-history-table";
-import HistoricalTable from "./historical-table";
-import HistoryStats from "./history-stats";
 function getFormattedDate(date) {
   return date.toISOString().split("T")[0];
 }
@@ -32,11 +30,18 @@ function ExchangeHistory({ result, historyKey, duration, setDuration }) {
           endDate,
           startDate,
         });
-        setHistory(series.rates);
+        const res = Object.keys(series.rates)
+          .reverse()
+          .reduce((acc, curr) => {
+            acc[curr] = series.rates[curr];
+            return acc;
+          }, {});
+        setHistory(res);
         setLoader(false);
       })();
     }
   }, [historyKey, duration]);
+  console.log("HISS", history);
   if (!result) {
     return null;
   }

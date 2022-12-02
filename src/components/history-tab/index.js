@@ -23,7 +23,12 @@ const HistoryTabComponent = ({ setInitResult, setTabIndex }) => {
     setHoveringOver((date) => propsData);
   const handleRowHoverLeave = (event, propsData) => setHoveringOver("");
   useEffect(() => {
-    setAllHistory(storageService.getAll());
+    console.log(storageService.getAll());
+    setAllHistory(
+      storageService.getAll().sort(function (a, b) {
+        return Date.parse(new Date(b[0])) - Date.parse(new Date(a[0]));
+      })
+    );
   }, []);
   function deleteHandler(rowId) {
     storageService.removeItem(rowId);
@@ -44,7 +49,7 @@ const HistoryTabComponent = ({ setInitResult, setTabIndex }) => {
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
               <TableHead>
-                <TableRow>
+                <TableRow hover>
                   <TableCell>Date</TableCell>
                   <TableCell>Event</TableCell>
                   <TableCell>Actions</TableCell>
@@ -56,6 +61,7 @@ const HistoryTabComponent = ({ setInitResult, setTabIndex }) => {
                     const result = JSON.parse(resString);
                     return (
                       <TableRow
+                        hover
                         onMouseEnter={(event) =>
                           handleRowHover(event, dateTime)
                         }

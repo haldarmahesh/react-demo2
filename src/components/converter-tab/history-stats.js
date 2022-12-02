@@ -37,19 +37,19 @@ const HistoryStats = ({ history, to }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
+          <TableRow hover>
             <TableCell component="th" scope="row">
               Lowest
             </TableCell>
             <TableCell align="right">{lowest}</TableCell>
           </TableRow>
-          <TableRow>
+          <TableRow hover>
             <TableCell component="th" scope="row">
               Highest
             </TableCell>
             <TableCell align="right">{highest}</TableCell>
           </TableRow>
-          <TableRow>
+          <TableRow hover>
             <TableCell component="th" scope="row">
               Average
             </TableCell>

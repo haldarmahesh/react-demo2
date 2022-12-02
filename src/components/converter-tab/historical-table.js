@@ -21,7 +21,7 @@ const HistoricalTable = ({ data, to }) => {
         <TableBody>
           {data &&
             Object.keys(data).map((date) => (
-              <TableRow key={date[date]}>
+              <TableRow hover key={date[date]}>
                 <TableCell component="th" scope="row">
                   {date}
                 </TableCell>
